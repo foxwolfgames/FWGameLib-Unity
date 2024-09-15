@@ -12,8 +12,7 @@ namespace FWGameLib.Common.AudioSystem
     {
         public static AudioManager Instance { get; private set; }
 
-        public int audioSourcePoolSize = 30;
-        public float defaultVolume = 0.5f;
+        public int audioSourcePoolSize = 50;
         // Initialize all sounds in inspector
         public GameObject pooledAudioSourcePrefab;
         [Tooltip("Sounds scriptable objects")] public List<SoundClipSO> clipData;
@@ -31,11 +30,14 @@ namespace FWGameLib.Common.AudioSystem
             {
                 switch (audioType)
                 {
+                    case AudioVolumeType.Master:
+                        VolumeValues.Add(audioType, 1.0f);
+                        break;
                     case AudioVolumeType.VoiceLines:
                         VolumeValues.Add(audioType, 0.85f);
                         break;
                     default:
-                        VolumeValues.Add(audioType, defaultVolume);
+                        VolumeValues.Add(audioType, 0.5f);
                         break;
                 }
             }
@@ -51,7 +53,7 @@ namespace FWGameLib.Common.AudioSystem
             }
             else
             {
-                // throw new Exception("AudioManager is a singleton and cannot be instantiated more than once.");
+                Destroy(gameObject);
             }
         }
 
@@ -132,9 +134,8 @@ namespace FWGameLib.Common.AudioSystem
         {
             for (int i = 0; i < audioSourcePoolSize; i++)
             {
-                GameObject pooledAudioSource = Instantiate(pooledAudioSourcePrefab);
+                GameObject pooledAudioSource = Instantiate(pooledAudioSourcePrefab, transform, true);
                 pooledAudioSource.SetActive(false);
-                DontDestroyOnLoad(pooledAudioSource);
                 _pooledAudioSources.Add(pooledAudioSource);
             }
         }
