@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace FWGameLib.Common
 {
@@ -21,7 +22,7 @@ namespace FWGameLib.Common
             // if we test both we can determine if the object has been destroyed.
             return gameObject == null && !ReferenceEquals(gameObject, null);
         }
-        
+
         /// <summary>
         /// Conditionally execute the true or false action based on the passed variable
         /// </summary>
